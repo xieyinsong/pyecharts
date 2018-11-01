@@ -104,15 +104,18 @@ class Timeline(Base):
         self._option.get("baseOption").get("timeline").update(
             data=self._time_points
         )
-        self._option.get("options").append(
-            {
-                "color": chart_options.get("color"),
-                "legend": chart_options.get("legend"),
-                "series": chart_options.get("series"),
-                "title": chart_options.get("title"),
-                "tooltip": chart_options.get("tooltip"),
-            }
-        )
+        _option = {
+            "color": chart_options.get("color"),
+            "legend": chart.options.get('legend'),
+            "series": chart.options.get('series'),
+            "title": chart.options.get('title'),
+            "tooltip": chart.options.get('tooltip'),
+        }
+        if chart.options.get('xAxis'):
+            _option['xAxis'] = chart.options.get('xAxis')
+        if chart.options.get('yAxis'):
+            _option['yAxis'] = chart.options.get('yAxis')
+        self._option.get('options').append(_option)
         _tmp_series = copy.deepcopy(chart_options.get("series"))
         for _s in _tmp_series:
             if _s.get("type") == "map":
